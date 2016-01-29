@@ -1,5 +1,5 @@
 # supervise
-Service supervisor. Keep process running, auto pull up.
+Service supervisor. Keep process running, auto pull it up.
 
 # Compiling
 [kesselborn/go-getopt](https://github.com/kesselborn/go-getopt) is required. Clone the repository in `github.com/kesselborn/go-getopt` relative to src path.
