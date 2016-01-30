@@ -153,11 +153,11 @@ func (su *Supervise) SuperviseLoop() {
 }
 
 func (su *Supervise) Start() {
-    su.Daemon()
     if su.AcquireLock() != nil {
         su.WriteLog("process is running.")
         os.Exit(SU_RUNNING)
     }
+    su.Daemon()
     su.StartSignalChan()
     su.StartControlChan()
     su.status = "running"
@@ -252,7 +252,7 @@ func (su *Supervise) ParseArgs() {
         "supervise",
         getopt.Definitions {
             {"status-dir|d|SU_STATUS_DIR", "status directory", getopt.Required,                           su.rundir},
-            {"cmd|c|SU_CMD",               "command line",     getopt.Required,                           "./sbin/mmsvr -d etc/xxx"},
+            {"cmd|c|SU_CMD",               "command line",     getopt.Required,                           "/sbin/hello -d /etc/hello.conf"},
             {"control|s",                  "operation",        getopt.Optional | getopt.ExampleIsDefault, "start"},
             {"daemon|D",                   "run as daemon",    getopt.Flag,                               false},
         },
