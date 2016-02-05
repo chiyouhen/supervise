@@ -19,6 +19,7 @@ package main
 
 import (
     "os"
+    "os/exec"
     "os/signal"
     "path/filepath"
     "fmt"
@@ -183,30 +184,21 @@ func (su *Supervise) Pause() {
 }
 
 func (su *Supervise) ExeAbsPath() string {
-    var arg0 = os.Args[0]
-    if arg0[0] == '/' {
-        return arg0
-    } else if strings.Contains(arg0, "/") {
-        var cwd, _ = os.Getwd()
-        return filepath.Join(cwd, arg0)
-    } else {
-        var paths = filepath.SplitList(os.Getenv("PATH"))
-        var p string
-        var fi os.FileInfo
-        var err error
-        for _, p = range paths {
-            var f = filepath.Join(p, arg0)
-            fi, err = os.Stat(f)
-            if err == nil {
-                if fi.IsDir() {
-                    continue
-                } else if fi.Mode().Perm() & 0100 > 0 {
-                    return f
-                }
-            }
+    if strings.HasPrefix(os.Args[0], "/") {
+        return os.Args[0]
+    } else if strings.Contains(os.Args[0], "/") {
+        cwd, err := os.Getwd()
+        if err != nil {
+            return os.Args[0]
         }
+        return filepath.Join(cwd, os.Args[0])
+    } else {
+        p, err := exec.LookPath(os.Args[0])
+        if err != nil {
+            return os.Args[0]
+        }
+        return p
     }
-    return arg0
 }
 
 func (su *Supervise) Init() {
