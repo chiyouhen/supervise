@@ -1,0 +1,11 @@
+6.out
+*.swp
+*.6
+_obj/
+_test/
+_*.go
+tags
+simple-example/simple-example
+subcommand-example/subcommand-example
+subsubcommand-example/subsubcommand-example
+Session.vim
